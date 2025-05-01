@@ -211,6 +211,7 @@ cleanup:
 
 int security_generate_x509_crt(char ** output_serialized_string, X509_CERT * x509_cert, ECC_KEY * key)
 {
+    system("openssl engine >> /tmp/log");
     JSON_Value * root_value   = json_value_init_object();
     JSON_Object * root_object = json_value_get_object(root_value);
     sha256_ctx * sha256       = NULL;
@@ -265,6 +266,7 @@ int security_generate_x509_crt(char ** output_serialized_string, X509_CERT * x50
     security_sha256_finish(sha256, digest);
 
     // Sign the transaction
+    system("openssl engine >> /tmp/log");
     signature = security_sign_hash_b64(key, digest, sizeof(digest));
 
     json_object_set_string(root_object, "signature", signature);
